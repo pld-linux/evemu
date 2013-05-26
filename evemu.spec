@@ -1,15 +1,18 @@
 Summary:	Linux kernel evdev device emulation
 Summary(pl.UTF-8):	Emulacja linuksowych urządzeń evdev
 Name:		evemu
-Version:	1.0.10
+Version:	1.1.0
 Release:	1
 License:	LGPL v3
 Group:		Libraries
-#Source0Download: https://launchpad.net/evemu/+download
-Source0:	https://launchpad.net/evemu/trunk/evemu-%{version}/+download/%{name}-%{version}.tar.xz
-# Source0-md5:	34595e1f7872b8440945e8c563e06932
-URL:		https://launchpad.net/evemu
+#Source0Download: http://cgit.freedesktop.org/evemu/
+Source0:	http://cgit.freedesktop.org/evemu/snapshot/%{name}-%{version}.tar.gz
+# Source0-md5:	8db37ed77eee5322c99c4b77e8d5fdf9
+URL:		http://www.freedesktop.org/wiki/Evemu/
 BuildRequires:	asciidoc
+BuildRequires:	autoconf >= 2.60
+BuildRequires:	automake >= 1:1.11
+BuildRequires:	libtool
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	tar >= 1:1.22
@@ -66,6 +69,11 @@ Pythonowy interfejs do biblioteki evemu.
 %setup -q
 
 %build
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
 	--disable-silent-rules
 %{__make}
@@ -89,7 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog README
+%doc README.md
 %attr(755,root,root) %{_bindir}/evemu-*
 %attr(755,root,root) %{_libdir}/libevemu.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libevemu.so.1
