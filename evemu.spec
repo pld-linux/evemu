@@ -6,7 +6,8 @@ Release:	1
 License:	LGPL v3
 Group:		Libraries
 #Source0Download: http://cgit.freedesktop.org/evemu/
-Source0:	http://cgit.freedesktop.org/evemu/snapshot/%{name}-%{version}.tar.gz
+#Source0:	http://cgit.freedesktop.org/evemu/snapshot/%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	2fd79afe0a21968f643972e0037798a8
 URL:		http://www.freedesktop.org/wiki/Evemu/
 BuildRequires:	asciidoc
