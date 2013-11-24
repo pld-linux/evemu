@@ -1,14 +1,12 @@
 Summary:	Linux kernel evdev device emulation
 Summary(pl.UTF-8):	Emulacja linuksowych urządzeń evdev
 Name:		evemu
-Version:	1.1.0
+Version:	1.2.0
 Release:	1
 License:	LGPL v3
 Group:		Libraries
-#Source0Download: http://cgit.freedesktop.org/evemu/
-#Source0:	http://cgit.freedesktop.org/evemu/snapshot/%{name}-%{version}.tar.gz
-Source0:	%{name}-%{version}.tar.gz
-# Source0-md5:	2fd79afe0a21968f643972e0037798a8
+Source0:	http://www.freedesktop.org/software/evemu/%{name}-%{version}.tar.xz
+# Source0-md5:	4968c3f0349efcda0804de7d58c1d1a5
 URL:		http://www.freedesktop.org/wiki/Evemu/
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
@@ -98,7 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.md
+%doc ChangeLog
 %attr(755,root,root) %{_bindir}/evemu-*
 %attr(755,root,root) %{_libdir}/libevemu.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libevemu.so.1
