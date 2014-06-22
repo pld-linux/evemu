@@ -1,22 +1,25 @@
 Summary:	Linux kernel evdev device emulation
 Summary(pl.UTF-8):	Emulacja linuksowych urządzeń evdev
 Name:		evemu
-Version:	1.2.0
+Version:	2.0.0
 Release:	1
 License:	LGPL v3
 Group:		Libraries
 Source0:	http://www.freedesktop.org/software/evemu/%{name}-%{version}.tar.xz
-# Source0-md5:	4968c3f0349efcda0804de7d58c1d1a5
+# Source0-md5:	c9eb014f2b536eca5b70ada93810f395
 URL:		http://www.freedesktop.org/wiki/Evemu/
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake >= 1:1.11
+BuildRequires:	libevdev-devel >= 0.5
 BuildRequires:	libtool
+BuildRequires:	pkgconfig
 BuildRequires:	python-devel >= 1:2.6
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xmlto
 BuildRequires:	xz
+Requires:	libevdev >= 0.5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -33,6 +36,7 @@ Summary:	Header files for evemu library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki evemu
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libevdev-devel >= 0.5
 
 %description devel
 Header files for evemu library.
@@ -96,10 +100,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog
 %attr(755,root,root) %{_bindir}/evemu-*
 %attr(755,root,root) %{_libdir}/libevemu.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libevemu.so.1
+%attr(755,root,root) %ghost %{_libdir}/libevemu.so.3
 %{_mandir}/man1/evemu-*.1*
 
 %files devel
