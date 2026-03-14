@@ -2,7 +2,7 @@ Summary:	Linux kernel evdev device emulation
 Summary(pl.UTF-8):	Emulacja linuksowych urządzeń evdev
 Name:		evemu
 Version:	2.7.0
-Release:	1
+Release:	2
 License:	LGPL v3
 Group:		Libraries
 Source0:	https://www.freedesktop.org/software/evemu/%{name}-%{version}.tar.xz
@@ -14,7 +14,7 @@ BuildRequires:	automake >= 1:1.11
 BuildRequires:	libevdev-devel >= 1.3
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires:	python-devel >= 1:2.6
+BuildRequires:	python3-devel
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xmlto
@@ -56,16 +56,16 @@ Static evemu library.
 %description static -l pl.UTF-8
 Statyczna biblioteka evemu.
 
-%package -n python-evemu
+%package -n python3-evemu
 Summary:	Python interface to evemu library
 Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki evemu
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
 
-%description -n python-evemu
+%description -n python3-evemu
 Python interface to evemu library.
 
-%description -n python-evemu -l pl.UTF-8
+%description -n python3-evemu -l pl.UTF-8
 Pythonowy interfejs do biblioteki evemu.
 
 %prep
@@ -115,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libevemu.a
 
-%files -n python-evemu
+%files -n python3-evemu
 %defattr(644,root,root,755)
-%dir %{py_sitescriptdir}/evemu
-%{py_sitescriptdir}/evemu/*.py[co]
+%dir %{py3_sitescriptdir}/evemu
+%{py3_sitescriptdir}/evemu/*
