@@ -61,6 +61,7 @@ Summary:	Python interface to evemu library
 Summary(pl.UTF-8):	Pythonowy interfejs do biblioteki evemu
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
+Obsoletes:	python-evemu < 2.7.0-2
 
 %description -n python3-evemu
 Python interface to evemu library.
@@ -78,6 +79,7 @@ Pythonowy interfejs do biblioteki evemu.
 %{__autoheader}
 %{__automake}
 %configure \
+	PYTHON=%{__python3} \
 	--disable-silent-rules
 %{__make}
 
@@ -101,13 +103,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/evemu-*
-%attr(755,root,root) %{_libdir}/libevemu.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libevemu.so.3
+%{_libdir}/libevemu.so.*.*.*
+%ghost %{_libdir}/libevemu.so.3
 %{_mandir}/man1/evemu-*.1*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libevemu.so
+%{_libdir}/libevemu.so
 %{_includedir}/evemu.h
 %{_pkgconfigdir}/evemu.pc
 
@@ -117,5 +119,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python3-evemu
 %defattr(644,root,root,755)
-%dir %{py3_sitescriptdir}/evemu
-%{py3_sitescriptdir}/evemu/*
+%{py3_sitescriptdir}/evemu
