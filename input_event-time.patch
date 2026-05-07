@@ -1,0 +1,103 @@
+--- evemu-2.7.0/src/evemu.c.orig	2017-06-02 10:02:09.000000000 +0200
++++ evemu-2.7.0/src/evemu.c	2026-05-08 01:14:20.073347601 +0200
+@@ -733,9 +733,9 @@
+ 	return rc;
+ }
+ 
+-static inline unsigned long millis(const struct timeval *tv)
++static inline unsigned long millis(const struct input_event *ev)
+ {
+-	return tv->tv_sec * 1000 + tv->tv_usec/1000;
++	return ev->input_event_sec * 1000 + ev->input_event_usec/1000;
+ }
+ 
+ static int write_event_desc(FILE *fp, const struct input_event *ev)
+@@ -750,7 +750,7 @@
+ 				     libevdev_event_code_get_name(ev->type, ev->code),
+ 				     ev->value);
+ 		} else {
+-			time = millis(&ev->time);
++			time = millis(ev);
+ 			dt = time - last_ms;
+ 			last_ms = time;
+ 			rc = fprintf(fp, "# ------------ %s (%d) ---------- %+ldms\n",
+@@ -771,13 +771,17 @@
+ {
+ 	int rc;
+ 	rc = fprintf(fp, "E: %lu.%06u %04x %04x %04d	",
+-		     ev->time.tv_sec, (unsigned)ev->time.tv_usec,
++		     ev->input_event_sec, (unsigned)ev->input_event_usec,
+ 		     ev->type, ev->code, ev->value);
+ 	rc += write_event_desc(fp, ev);
+ 	return rc;
+ }
+ 
+-static inline long time_to_long(const struct timeval *tv) {
++static inline long time_to_long(const struct input_event *ev) {
++	return ev->input_event_sec * 1000000L + ev->input_event_usec;
++}
++
++static inline long etime_to_long(const struct timeval *tv) {
+ 	return tv->tv_sec * 1000000L + tv->tv_usec;
+ }
+ 
+@@ -803,10 +807,12 @@
+ 			long time;
+ 
+ 			if (offset == 0)
+-				offset = time_to_long(&ev.time) - 1;
++				offset = time_to_long(&ev) - 1;
+ 
+-			time = time_to_long(&ev.time);
+-			ev.time = long_to_time(time - offset);
++			time = time_to_long(&ev);
++			struct timeval tv = long_to_time(time - offset);
++			ev.input_event_sec = tv.tv_sec;
++			ev.input_event_usec = tv.tv_usec;
+ 			evemu_write_event(fp, &ev);
+ 			fflush(fp);
+ 		}
+@@ -839,8 +845,8 @@
+ 		return -1;
+ 	}
+ 
+-	ev->time.tv_sec = sec;
+-	ev->time.tv_usec = usec;
++	ev->input_event_sec = sec;
++	ev->input_event_usec = usec;
+ 	ev->type = type;
+ 	ev->code = code;
+ 	ev->value = value;
+@@ -852,8 +858,8 @@
+ 
+ int evemu_create_event(struct input_event *ev, int type, int code, int value)
+ {
+-	ev->time.tv_sec = 0;
+-	ev->time.tv_usec = 0;
++	ev->input_event_sec = 0;
++	ev->input_event_usec = 0;
+ 	ev->type = type;
+ 	ev->code = code;
+ 	ev->value = value;
+@@ -882,14 +888,17 @@
+ 		return ret;
+ 
+ 	if (evtime) {
+-		if (evtime->tv_sec == 0 && evtime->tv_usec == 0)
+-			*evtime = ev->time;
+-		usec = time_to_long(&ev->time) - time_to_long(evtime);
++		if (evtime->tv_sec == 0 && evtime->tv_usec == 0) {
++			evtime->tv_sec = ev->input_event_sec;
++			evtime->tv_usec = ev->input_event_usec;
++		}
++		usec = time_to_long(ev) - etime_to_long(evtime);
+ 		if (usec > ERROR_MARGIN * 2) {
+ 			if (usec > s2us(10))
+ 				error(INFO, "Sleeping for %lds.\n", us2s(usec));
+ 			usleep(usec - ERROR_MARGIN);
+-			*evtime = ev->time;
++			evtime->tv_sec = ev->input_event_sec;
++			evtime->tv_usec = ev->input_event_usec;
+ 		}
+ 	}
+ 

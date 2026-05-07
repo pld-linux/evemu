@@ -7,6 +7,7 @@ License:	LGPL v3
 Group:		Libraries
 Source0:	https://www.freedesktop.org/software/evemu/%{name}-%{version}.tar.xz
 # Source0-md5:	bc1e819ac06e3444e2f47b88171d2597
+Patch0:		input_event-time.patch
 URL:		https://www.freedesktop.org/wiki/Evemu/
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
@@ -71,6 +72,7 @@ Pythonowy interfejs do biblioteki evemu.
 
 %prep
 %setup -q
+%patch -P0 -p1
 
 %build
 %{__libtoolize}
