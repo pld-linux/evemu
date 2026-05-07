@@ -2,7 +2,7 @@ Summary:	Linux kernel evdev device emulation
 Summary(pl.UTF-8):	Emulacja linuksowych urządzeń evdev
 Name:		evemu
 Version:	2.7.0
-Release:	2
+Release:	3
 License:	LGPL v3
 Group:		Libraries
 Source0:	https://www.freedesktop.org/software/evemu/%{name}-%{version}.tar.xz
